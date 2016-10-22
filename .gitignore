@@ -1,0 +1,6 @@
+.Trashes
+*.DS_Store
+
+*.o
+*.so
+*.swp
