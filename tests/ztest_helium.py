@@ -221,9 +221,13 @@ class TestHelium(ContextTestCase):
     def run_block(self, block):
         f = NamedTemporaryFile(delete=True)
         if 'ast' in block:
-            f.write(template.format(block['ast'].value, ast="true"))
+            item = block['ast']
+            f.write(template.format(item.value, ast="true"))
         else:
-            f.write(template.format(block['run'].value, ast="false"))
+            item = block['run']
+            f.write(template.format(item.value, ast="false"))
+        if 'copy' in item.option:
+            shell(["cp", f.name, working_directory])
         f.flush()
         try:
             p = shell([lua, f.name])
