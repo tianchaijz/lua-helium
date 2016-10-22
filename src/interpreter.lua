@@ -157,7 +157,15 @@ function I:_call(node, env)
     end
 
     local ok, ret = pcall(function() return func(unpack(args)) end)
-    return ret and ret.value or nil
+    if ok then
+        return
+    end
+
+    if is_str(ret) then
+        error("unexpected error: " .. ret)
+    end
+
+    return ret.value
 end
 
 
@@ -190,8 +198,8 @@ end
 
 function I:_exec(node, env)
     local tag = node[1]
-    local _exec = self["_" .. tag] or self._expr
-    return _exec(self, node, env)
+    local exec = self["_" .. tag] or self._expr
+    return exec(self, node, env)
 end
 
 
