@@ -1,0 +1,22 @@
+#!/bin/bash
+
+unset ZTEST_DIR
+unset ZTEST_RUN_ONLY
+unset ZTEST_RETAIN_NGINX
+
+export ZTEST_LUA=$(command -v luajit || command -v lua)
+
+if [ -n "$1" ]; then
+    export ZTEST_DIR=$1
+fi
+
+if [ -n "$2" ]; then
+    export ZTEST_RUN_ONLY=$2
+fi
+
+if [ -n "$3" ]; then
+    export ZTEST_RETAIN_NGINX=1
+fi
+
+
+python tests/ztest_helium.py
