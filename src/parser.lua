@@ -99,7 +99,7 @@ local String = Space * (P'"' * C(((P"\\" * P(1)) + (P(1) - P'"'))^0) * P'"' +
                      / mark("string")
 
 local CompOp = op(S"><" * P"="^-1) + op(S"!=" * P"=")
-local AddOp = op(S"+-")
+local AddOp = op(S"+-%")
 local MulOp = op(S"*/")
 
 local program = P({

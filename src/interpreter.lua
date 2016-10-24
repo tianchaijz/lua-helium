@@ -88,6 +88,8 @@ function I:_expr(node, env)
         return lhs + rhs
     elseif op == "-" then
         return lhs - rhs
+    elseif op == "%" then
+        return lhs % rhs
     elseif op == "*" then
         return lhs * rhs
     elseif op == "/" then
