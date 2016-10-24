@@ -1,3 +1,4 @@
+local io = require "io"
 local os = require "os"
 local parser = require "parser"
 
@@ -45,6 +46,7 @@ local mt = { __index = I }
 
 local _parent = -1
 local global_env = {
+    write = io.write,
     print = print,
     exit = os.exit
 }
