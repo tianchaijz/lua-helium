@@ -1,0 +1,138 @@
+=== TEST 1.0: math
+--- run
+write(1+1)
+--- out
+2
+
+--- run
+write(1*2)
+--- out
+2
+
+--- run
+local a = 10 % 3
+write(a)
+--- out
+1
+
+--- run
+local a = 1+2*3
+write(a)
+--- out
+7
+
+--- run
+local a = (1+2)*3
+write(a)
+--- out
+9
+
+--- run
+local a = (1+2*3+2)/3
+write(a)
+--- out
+3
+
+
+=== TEST 2.0: branch
+--- run
+n = 2
+if n > 0
+    write(n)
+end
+--- out
+2
+
+--- run
+n = -1
+if n > 0
+    write(n)
+else
+    write(-1 * n)
+end
+--- out
+1
+
+
+=== TEST 3.0: function abs
+--- run
+def abs(num)
+    if num < 0
+        return -1 * num
+    end
+
+    return num
+end
+
+write(abs(1))
+write(abs(0))
+write(abs(-1))
+--- out
+101
+
+=== TEST 3.1: function factorial
+--- run
+def factorial(n)
+    if n < 2 return 1 end
+    return n * factorial(n - 1)
+end
+write(factorial(5))
+--- out
+120
+
+=== TEST 3.2: function fibonacci
+--- run
+def fibonacci(n)
+    if n < 2 return n end
+    return fibonacci(n - 1) + fibonacci(n - 2)
+end
+print(fibonacci(5))
+write(fibonacci(10))
+--- out
+5
+55
+
+
+=== TEST 4.0: closure
+--- run
+def incr()
+    local n = 0
+    def wrapper()
+        n = n + 1
+        return n
+    end
+
+    return wrapper
+end
+
+local i1 = incr()
+local i2 = incr()
+write(i1())
+write(i1())
+write(i1())
+write(i2())
+write(i2())
+write(i2())
+--- out
+123123
+
+--- run
+def wrapper()
+    local inner = 1
+    def update(v)
+        write(inner)
+        inner = v
+        return inner
+    end
+
+    # global assign
+    i2 = update
+
+    return update
+end
+
+local i1 = wrapper()
+i1(2)
+i2(3)
+--- out
+12
