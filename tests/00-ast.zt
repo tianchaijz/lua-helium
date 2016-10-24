@@ -46,3 +46,93 @@ n = 1+m*2
 local n = 1
 --- out
 [["local","n",["number",1]]]
+
+
+=== TEST 2.0: if
+--- ast
+if n < 0
+end
+--- out
+[["if",["<",["ref","n"],["number",0]],{}]]
+
+--- ast
+if n < 0
+    n = -1 * n
+end
+--- out
+[["if",["<",["ref","n"],["number",0]],[["assign","n",["*",["number",-1],["ref","n"]]]]]]
+
+--- ast
+if n < m * 2
+    n = -1 * n
+end
+--- out
+[["if",["<",["ref","n"],["*",["ref","m"],["number",2]]],[["assign","n",["*",["number",-1],["ref","n"]]]]]]
+
+
+=== TEST 2.1: if else
+--- ast
+if n > 0
+else
+end
+--- out
+[["if",[">",["ref","n"],["number",0]],{},["else",{}]]]
+
+--- ast
+if n > 0
+    n = n * 2
+else
+    n = n * -1
+end
+--- out
+[["if",[">",["ref","n"],["number",0]],[["assign","n",["*",["ref","n"],["number",2]]]],["else",[["assign","n",["*",["ref","n"],["number",-1]]]]]]]
+
+
+=== TEST 3.0: while
+--- ast
+while n > 0
+    n = n - 1
+end
+--- out
+[["while",[">",["ref","n"],["number",0]],[["assign","n",["-",["ref","n"],["number",1]]]]]]
+
+
+=== TEST 4.0: call
+--- ast
+n = add(1, 2)
+--- out
+[["assign","n",["call","add",[["number",1],["number",2]]]]]
+
+--- ast
+n = add(1, 2) * 2
+--- out
+[["assign","n",["*",["call","add",[["number",1],["number",2]]],["number",2]]]]
+
+
+=== TEST 5.0: def
+--- ast
+def factorial(n)
+    if n < 2 return 1 end
+    return n * factorial(n - 1)
+end
+--- out
+[["def","factorial",["n"],[["if",["<",["ref","n"],["number",2]],[["return",["number",1]]]],["return",["*",["ref","n"],["call","factorial",[["-",["ref","n"],["number",1]]]]]]]]]
+
+--- ast
+def add(a, b)
+    return a + b
+end
+--- out
+[["def","add",["a","b"],[["return",["+",["ref","a"],["ref","b"]]]]]]
+
+=== TEST 5.1: nested def
+--- ast
+def incr()
+    local n = 0
+    def wrapper()
+        n = n + 1
+        return n
+    end
+end
+--- out
+[["def","incr",{},[["local","n",["number",0]],["def","wrapper",{},[["assign","n",["+",["ref","n"],["number",1]]],["return",["ref","n"]]]]]]]
