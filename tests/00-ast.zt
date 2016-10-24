@@ -47,6 +47,13 @@ local n = 1
 --- out
 [["local","n",["number",1]]]
 
+=== TEST 1.8: floating-point number
+--- ast
+m = 1.1
+n = -1.1
+--- out
+[["assign","m",["number",1.1]],["assign","n",["number",-1.1]]]
+
 
 === TEST 2.0: if
 --- ast

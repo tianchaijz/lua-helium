@@ -93,7 +93,7 @@ end
 local Keywords = P"if" + P"else" + P"end" + P"def" + P"while" +
                  P"return" + P"break" + P"continue"
 local Id = Space * (C((Alpha + P"_") * AlphaNum^0) - Keywords)
-local Num = Space * (P"-"^-1 * R"09"^1 / tonumber) / mark("number")
+local Num = Space * (P"-"^-1 * (R"09"^1 * P".")^-1 * R"09"^1 / tonumber) / mark("number")
 local String = Space * (P'"' * C(((P"\\" * P(1)) + (P(1) - P'"'))^0) * P'"' +
                         P"'" * C(((P"\\" * P(1)) + (P(1) - P"'"))^0) * P"'")
                      / mark("string")
