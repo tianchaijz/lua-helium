@@ -157,7 +157,7 @@ function I:_call(node, env)
 
     local args = {}
     for i, expr in ipairs(node[3]) do
-        args[i] = self:_exec(expr, env)
+        args[i] = self:_expr(expr, env)
     end
 
     local ok, ret = pcall(function() return func(unpack(args)) end)
@@ -182,7 +182,7 @@ end
 function I:_assign(node, env)
     local id = node[2]
     local expr = node[3]
-    local value = self:_exec(expr, env)
+    local value = self:_expr(expr, env)
 
     while true do
         if env[id] or env == self.env then
@@ -193,23 +193,24 @@ function I:_assign(node, env)
     end
 end
 
+
 function I:_local(node, env)
     local id = node[2]
     local expr = node[3]
-    env[id] = self:_exec(expr, env)
+    env[id] = self:_expr(expr, env)
 end
 
 
-function I:_exec(node, env)
+function I:visit(node, env)
     local tag = node[1]
-    local exec = self["_" .. tag] or self._expr
-    return exec(self, node, env)
+    local visit = self["_" .. tag] or self._expr
+    return visit(self, node, env)
 end
 
 
 function I:interpret(ast, env)
     for _, node in ipairs(ast) do
-        self:_exec(node, env or self.env)
+        self:visit(node, env or self.env)
     end
 end
 

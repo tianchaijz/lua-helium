@@ -16,7 +16,7 @@ local R, S, V, P, C, Ct, Cp, Cg, Cb, Cc, Cf =
 
 
 local Break = P"\r"^-1 * P"\n"
-local Comment = P("#") * (1 - P"\n")^0
+local Comment = P"#" * (1 - P"\n")^0
 local White = S" \t\r\n"
 local Space = (White + Comment)^0
 local Alpha = lpeg.alpha
