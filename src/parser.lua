@@ -98,7 +98,7 @@ local String = Space * (P'"' * C(((P"\\" * P(1)) + (P(1) - P'"'))^0) * P'"' +
                         P"'" * C(((P"\\" * P(1)) + (P(1) - P"'"))^0) * P"'")
                      / mark("string")
 
-local CompOp = op(S"><" * P"="^-1) + op(S"!=" * P"=")
+local CompOp = op(S"><!=" * P"="^-1)
 local AddOp = op(S"+-%")
 local MulOp = op(S"*/")
 

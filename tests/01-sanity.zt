@@ -53,6 +53,20 @@ end
 --- out
 1
 
+--- run
+local a = 1
+local b = 2
+if a != b
+    write(1)
+end
+
+if a == 1
+    write(1)
+end
+
+--- out
+11
+
 
 === TEST 3.0: function abs
 --- run
