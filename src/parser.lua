@@ -23,55 +23,52 @@ local Alpha = lpeg.alpha
 local AlphaNum = R("az", "AZ", "09", "__")
 
 
-local mark = function(name)
-  return function(...)
-    return {
-      name,
-      ...
-    }
-  end
-end
-
-
-local remark = function(name)
-  return function(cap)
-    cap[1] = name
-    return cap
-  end
-end
-
-
-local pos = function(patt)
-  return (Cp() * patt) / function(pos, value)
-    if type(value) == "table" then
-      value[-1] = pos
+local function mark(name)
+    return function(...)
+        return { name, ... }
     end
-    return value
-  end
 end
 
 
-local keyword = function(chars)
+local function remark(name)
+    return function(cap)
+        cap[1] = name
+        return cap
+    end
+end
+
+
+local function pos(patt)
+    return (Cp() * patt) / function(pos, cap)
+        if type(cap) == "table" then
+            cap[-1] = pos
+        end
+        return cap
+    end
+end
+
+
+local function keyword(chars)
     return Space * chars * -AlphaNum
 end
 
 
-local sym = function(chars)
-  return Space * chars
+local function sym(chars)
+    return Space * chars
 end
 
 
-local op = function(chars)
+local function op(chars)
     return Space * C(chars)
 end
 
 
 local function binaryOp(lhs, op, rhs)
-  if not op then
-    return lhs
-  end
+    if not op then
+        return lhs
+    end
 
-  return { op, lhs, rhs }
+    return { op, lhs, rhs }
 end
 
 
